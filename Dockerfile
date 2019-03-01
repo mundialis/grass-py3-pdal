@@ -252,5 +252,3 @@ ENV LD_LIBRARY_PATH "$LD_LIBRARY_PATH:$GISBASE/lib"
 
 ADD src/test_grass_session.py /scripts
 ADD testdata/simple.laz /tmp
-
-ENTRYPOINT ["/bin/bash"]
