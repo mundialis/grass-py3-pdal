@@ -30,7 +30,7 @@ test:
   stage: test
   script:
     - docker pull $CONTAINER_TEST_IMAGE
-    - docker run $CONTAINER_TEST_IMAGE /scripts/test_grass_session.py
+    - docker run $CONTAINER_TEST_IMAGE python3 /scripts/test_grass_session.py
 
 release-image:
   tags:
