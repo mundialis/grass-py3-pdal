@@ -47,7 +47,7 @@ grass_docker --config svn_revision version
 
 ## Run a PDAL test with an included LAZ file
 
-The `simple.laz` file (originating from [PDAL test data](https://github.com/PDAL/PDAL/tree/master/test/data/laz)
+The `simple.laz` file (source: [PDAL test data](https://github.com/PDAL/PDAL/tree/master/test/data/laz))
 is included in this Docker image under /tmp/. It can be scanned by GRASS GIS using the r.in.pdal addon (also included):
 
 ```bash
@@ -64,7 +64,8 @@ grass_docker -c epsg:4326 --tmp-location --exec r.in.pdal -sg input=/tmp/simple.
 
 ## Executing a script: zonal statistics
 
-Instead of a single GRASS GIS command also a sequence, stored in a text file, can be executed:
+Instead of a single GRASS GIS command also a sequence, stored in a text file, can be executed.
+We first download to geospatial datasets for our zonal statistics analysis:
 
 ```bash
 # download North Carolina, USA, elevation raster map to current directory
@@ -76,17 +77,20 @@ wget https://apps.mundialis.de/workshops/osgeo_ireland2017/north_carolina/zipcod
 ogrinfo -al -so zipcodes_wake.gpkg
 ```
 
-We now have two spatial datasets downloaded. The spatial reference system of these
-North Carolina data is EPSG:32119, NAD83 / North Carolina (see also [https://epsg.io/32119](https://epsg.io/32119)).
+Now we have two spatial datasets downloaded. The spatial reference system of these
+North Carolina dataset files is EPSG:32119, NAD83 / North Carolina (see also
+[https://epsg.io/32119](https://epsg.io/32119)).
 
-Next we write a script to analyse these datasets in order to compute the minimum, average,
-maximum elevation as well as 1st and 3rd quartiles per ZIP code area. Store the following
-code block as a text file `grass_zonal_stats.sh` in the current directory:
+Next we write a shell script to analyse these datasets in order to compute the minimum, average,
+maximum elevation as well as 1st and 3rd quartiles per ZIP code area using
+[v.what.vect](https://grass.osgeo.org/grass76/manuals/v.what.vect.html). Store the following
+code block as a text file named `grass_zonal_stats.sh` in the current directory:
 
 ```bash
 # note that the current directory is mounted under /data/ in the docker container
-#  import datasets
+#  import datasets into GRASS GIS
 r.import input=/data/elev_state_500m.tif output=elev_state_500m
+#  the vector import performs minor topological cleaning
 v.import input=/data/zipcodes_wake.gpkg output=zipcodes_wake
 
 # check metadata
@@ -97,14 +101,14 @@ v.info zipcodes_wake
 #  see https://grasswiki.osgeo.org/wiki/Computational_region
 g.region vector=zipcodes_wake align=elev_state_500m -p
 
-# enrich attribute table of 'zipcodes_wake' with additional columns
+# enrich attribute table of 'zipcodes_wake' with additional columns (results of zonal statistics)
 v.rast.stats map=zipcodes_wake raster=elev_state_500m column_prefix=elev method=minimum,maximum,average,first_quartile,third_quartile
 
 # export result outside of GRASS GIS/docker image to current directory
 v.out.ogr input=zipcodes_wake output=/data/zipcodes_wake_elev_stats.gpkg
 ```
 
-The stored script is then run as follows:
+The saved shell script is then run via docker-GRASS GIS as follows:
 
 ```bash
 # note: via alias the current directory is mounted under /data/ in the docker container
