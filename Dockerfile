@@ -182,6 +182,7 @@ RUN sed -i 's,python,python3,' include/Make/Platform.make.in
 # Configure compile and install GRASS GIS
 ENV GRASS_PYTHON=/usr/bin/python3
 ENV NUMTHREADS=4
+RUN make distclean || echo "nothing to clean"
 RUN /src/grass_build/configure \
   --with-cxx \
   --enable-largefile \
