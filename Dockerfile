@@ -162,7 +162,8 @@ RUN mkdir -p /src/grass_build && \
     tar xfz grass-$GRASS_VERSION.svn_src_snapshot_latest.tar.gz --strip=1 -C /src/grass_build && \
     rm -f grass-$GRASS_VERSION.svn_src_snapshot_latest.tar.gz
 WORKDIR /src/grass_build
-# load updates between the weekly snapshots
+# this line should break docker cache if there are changes after snapshot
+ADD https://svn.osgeo.org/grass/grass/ /src/TrunkRevision.html
 RUN svn update
 
 # Set environmental variables for GRASS GIS compilation, without debug symbols
