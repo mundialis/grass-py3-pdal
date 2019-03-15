@@ -232,7 +232,6 @@ RUN grass --config svn_revision version
 RUN apt-get autoremove -y
 RUN apt-get clean -y
 
-RUN mkdir /scripts
 WORKDIR /scripts
 
 ADD requirements.txt /scripts
@@ -255,3 +254,6 @@ ENV LD_LIBRARY_PATH "$LD_LIBRARY_PATH:$GISBASE/lib"
 
 ADD src/test_grass_session.py /scripts
 ADD testdata/simple.laz /tmp
+
+WORKDIR /grassdb
+VOLUME /grassdb
