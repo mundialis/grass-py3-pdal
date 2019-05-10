@@ -167,9 +167,9 @@ ADD https://svn.osgeo.org/grass/grass/ /src/TrunkRevision.html
 RUN svn update
 
 # Set environmental variables for GRASS GIS compilation, without debug symbols
-ENV INTEL "-march=native -std=gnu99 -fexceptions -fstack-protector -m64"
-ENV MYCFLAGS "-O2 -fno-fast-math -fno-common $INTEL"
-ENV MYLDFLAGS "-s -Wl,--no-undefined"
+# Set gcc/g++ environmental variables for GRASS GIS compilation, without debug symbols
+ENV MYCFLAGS "-O2 -std=gnu99 -m64"
+ENV MYLDFLAGS "-s"
 # CXX stuff:
 ENV LD_LIBRARY_PATH "/usr/local/lib"
 ENV LDFLAGS "$MYLDFLAGS"
