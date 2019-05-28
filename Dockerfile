@@ -153,18 +153,16 @@ RUN wget \
     make -j $NUMTHREADS && \
     make install
 
-# download grass gis source
+# download grass gis source from git
+ARG SOURCE_GIT_URL=https://github.com
+ARG SOURCE_GIT_REMOTE=OSGeo
+ARG SOURCE_GIT_REPO=grass
+ARG SOURCE_GIT_BRANCH=master
+# ARG SOURCE_GIT_BRANCH=releasebranch_7_6
 WORKDIR /src
-# this line should break docker cache if there are changes - weekly updated
-ADD https://grass.osgeo.org/grass${GRASS_SHORT_VERSION}/source/snapshot/ChangeLog.gz /src/ChangeLog.gz
-RUN wget https://grass.osgeo.org/grass${GRASS_SHORT_VERSION}/source/snapshot/grass-${GRASS_VERSION}.svn_src_snapshot_latest.tar.gz
-RUN mkdir -p /src/grass_build && \
-    tar xfz grass-$GRASS_VERSION.svn_src_snapshot_latest.tar.gz --strip=1 -C /src/grass_build && \
-    rm -f grass-$GRASS_VERSION.svn_src_snapshot_latest.tar.gz
+ADD https://api.github.com/repos/$SOURCE_GIT_REMOTE/$SOURCE_GIT_REPO/git/refs/heads/$SOURCE_GIT_BRANCH version.json
+RUN git clone -b ${SOURCE_GIT_BRANCH} --single-branch ${SOURCE_GIT_URL}/${SOURCE_GIT_REMOTE}/${SOURCE_GIT_REPO}.git grass_build
 WORKDIR /src/grass_build
-# this line should break docker cache if there are changes after snapshot
-ADD https://svn.osgeo.org/grass/grass/ /src/TrunkRevision.html
-RUN svn update
 
 # Set environmental variables for GRASS GIS compilation, without debug symbols
 # Set gcc/g++ environmental variables for GRASS GIS compilation, without debug symbols
@@ -226,6 +224,7 @@ ENV GRASS_SKIP_MAPSET_OWNER_CHECK 1
 # Create generic GRASS GIS binary name regardless of version number
 RUN ln -sf `find /usr/local/bin -name "grass??" | sort | tail -n 1` /usr/local/bin/grass
 
+# TODO if code_revision is available
 RUN grass --config svn_revision version
 
 # Reduce the image size
