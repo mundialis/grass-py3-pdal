@@ -6,8 +6,8 @@ LABEL maintainer="tawalika@mundialis.de,neteler@mundialis.de,bettge@mundialis.de
 ENV DEBIAN_FRONTEND noninteractive
 
 # define versions to be used
-ARG GRASS_VERSION=7.7
-ARG GRASS_SHORT_VERSION=77
+ARG GRASS_VERSION=7.8
+ARG GRASS_SHORT_VERSION=78
 ARG PDAL_VERSION=1.8.0
 ARG PROJ_VERSION=4.9.3
 ARG PROJ_DATUMGRID_VERSION=1.8
@@ -157,8 +157,8 @@ RUN wget \
 ARG SOURCE_GIT_URL=https://github.com
 ARG SOURCE_GIT_REMOTE=OSGeo
 ARG SOURCE_GIT_REPO=grass
-ARG SOURCE_GIT_BRANCH=master
-# ARG SOURCE_GIT_BRANCH=releasebranch_7_6
+#ARG SOURCE_GIT_BRANCH=master
+ARG SOURCE_GIT_BRANCH=releasebranch_7_8
 WORKDIR /src
 ADD https://api.github.com/repos/$SOURCE_GIT_REMOTE/$SOURCE_GIT_REPO/git/refs/heads/$SOURCE_GIT_BRANCH version.json
 RUN git clone -b ${SOURCE_GIT_BRANCH} --single-branch ${SOURCE_GIT_URL}/${SOURCE_GIT_REMOTE}/${SOURCE_GIT_REPO}.git grass_build
@@ -246,7 +246,7 @@ WORKDIR /root/.grass7/addons/scripts
 RUN find -type f | xargs sed -i 's,#!/usr/bin/env python,#!/usr/bin/env python3,'
 
 # add GRASS GIS envs for python usage
-ENV GISBASE "/usr/local/grass77/"
+ENV GISBASE "/usr/local/grass78/"
 ENV GRASSBIN "/usr/local/bin/grass"
 ENV PYTHONPATH "${PYTHONPATH}:$GISBASE/etc/python/"
 ENV LD_LIBRARY_PATH "$LD_LIBRARY_PATH:$GISBASE/lib"

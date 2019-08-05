@@ -1,5 +1,5 @@
 # grass-py3-pdal
-Repo which contains a Dockerfile to compile latest GRASS GIS (trunk, currently grass77) with Python-3 and PDAL support
+Repo which contains a Dockerfile to compile GRASS GIS 7.8 (release branch, grass78) with Python-3 and PDAL support
 
 # Installation
 
@@ -38,7 +38,7 @@ alias grass_docker="docker run -v $PWD:/data --user $(id --user):$(id --group) -
 grass_docker --version
 ```
 
-## Show detailed SVN revision number
+## Show detailed revision number
 
 ```bash
 # using alias from above
@@ -83,7 +83,7 @@ North Carolina dataset files is EPSG:32119, NAD83 / North Carolina (see also
 
 Next we write a shell script to analyse these datasets in order to compute the minimum, average,
 maximum elevation as well as 1st and 3rd quartiles per ZIP code area using
-[v.what.vect](https://grass.osgeo.org/grass76/manuals/v.what.vect.html). Store the following
+[v.what.vect](https://grass.osgeo.org/grass78/manuals/v.what.vect.html). Store the following
 code block as a text file named `grass_zonal_stats.sh` in the current directory:
 
 ```bash
