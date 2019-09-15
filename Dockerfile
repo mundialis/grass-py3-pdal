@@ -108,7 +108,7 @@ RUN wget https://github.com/hobu/laz-perf/archive/${LAZ_PERF_VERSION}.tar.gz -O 
 ## fetch vertical datums and store into PROJ dir
 WORKDIR /src
 RUN mkdir vdatum && \
-    cd /vdatum && \
+    cd vdatum && \
     wget http://download.osgeo.org/proj/vdatum/usa_geoid2012.zip && unzip -j -u usa_geoid2012.zip -d /usr/share/proj; \
     wget http://download.osgeo.org/proj/vdatum/usa_geoid2009.zip && unzip -j -u usa_geoid2009.zip -d /usr/share/proj; \
     wget http://download.osgeo.org/proj/vdatum/usa_geoid2003.zip && unzip -j -u usa_geoid2003.zip -d /usr/share/proj; \
