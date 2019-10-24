@@ -128,7 +128,7 @@ qgis zipcodes_wake_elev_stats.gpkg
 
 ## Using Python
 
-Thee script below uses the Python API of GRASS GIS to make use of functionality without
+The script below uses the Python API of GRASS GIS to make use of functionality without
 explicitely starting an interactive GRASS GIS session. Moreover, we use the
 `grass-session` Python interface here.
 
