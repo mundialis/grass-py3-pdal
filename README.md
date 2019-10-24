@@ -42,7 +42,7 @@ grass_docker --version
 
 ```bash
 # using alias from above
-grass_docker --config svn_revision version
+grass_docker --tmp-location EPSG:4326 --exec g.version -rge
 ```
 
 ## Run a PDAL test with an included LAZ file
@@ -124,4 +124,21 @@ ogrinfo -al -so zipcodes_wake_elev_stats.gpkg
 
 # look at it e.g. in QGIS
 qgis zipcodes_wake_elev_stats.gpkg
+```
+
+## Using Python
+
+Thee script below uses the Python API of GRASS GIS to make use of functionality without
+explicitely starting an interactive GRASS GIS session. Moreover, we use the
+`grass-session` Python interface here.
+
+In this example, we import of the "admin0" level vector data from
+[Natural Earth](https://www.naturalearthdata.com/). The Python script downloads and imports
+the vector data including a topological cleaning on the fly.
+
+```bash
+# download sample script
+wget https://neteler.gitlab.io/grass-gis-analysis/grass_session_vector_import.py
+# run it (we explicitely define the GRASS GIS start script name here)
+export GRASSBIN=grass ; python3 grass_session_vector_import.py
 ```
